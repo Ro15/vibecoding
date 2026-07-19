@@ -14,6 +14,18 @@ apps/watchdog/    Project 3 — Intelligent Observability & Event Watchdog (SRE)
 Run any app: `python -m uvicorn apps.<name>.api.main:app --port 8000` from the repo root.
 Run all tests: `python -m pytest -q` · Playwright: `python -m pytest apps/*/tests/e2e -q`.
 
+**Guardrail (Project 2)** — audits Terraform (HCL + plan JSON) and CloudFormation against
+a CIS-aligned baseline (public S3, open SSH/RDP, unencrypted storage, public DBs, wildcard
+IAM), producing a 0–100 **Risk Score** + letter grade on a gauge dashboard. Parsers and
+policies are plugins; policy dispatch is type-indexed (O(R+M), not rules×resources).
+Sample data: `apps/guardrail/sample_data/insecure.tf` (grade F) vs `secure.tf` (A+).
+
+**Watchdog (Project 3)** — parses JSON/syslog/text logs, detects error-rate spikes with an
+**online EWMA + z-score** detector (O(1) time & space per point — memory bounded regardless
+of log volume) *and* a lightweight **IsolationForest** ML detector, then fires **simulated
+webhook alerts** (cooldown-deduped) and visualizes health trends with a live-replay demo.
+Sample data: `apps/watchdog/sample_data/app.log` (seeded checkout spike).
+
 ---
 
 # CostOpt — Cloud Cost Optimizer & Remediation Engine

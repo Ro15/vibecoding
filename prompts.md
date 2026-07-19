@@ -169,4 +169,13 @@ dashboard with gauge. 37 unit/API + 7 Playwright tests green; agent-browser veri
 all 3 formats (HCL F, CFN F, plan D) + secure.tf A+. Committed.
 Phase 2 (Project 3 — Watchdog) in progress.
 
+Phase 2 complete: JSON/syslog/text log parsers, online EWMA+z-score detector (O(1)/point)
++ IsolationForest ML detector, gap-filled bucketing, cooldown-deduped simulated webhook
+alerts, config engine, health-trend dashboard with anomaly markers + live replay. 40
+unit/API + 6 Playwright tests green; agent-browser verified spike detection (checkout
+score 13.39) + replay animation. Committed.
+
+Final state: 3 apps on shared common core. 196 unit/API + 25 Playwright (12+7+6) tests
+green. All pushed to github.com/Ro15/vibecoding branch projects-2-3-monorepo.
+
 ---

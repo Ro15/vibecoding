@@ -3,6 +3,15 @@ uvicorn[standard]==0.51.0
 SQLAlchemy==2.0.51
 pydantic==2.13.4
 python-multipart==0.0.32
+APScheduler==3.11.3
+
+# guardrail (Project 2) — IaC parsing
+python-hcl2==8.1.2
+PyYAML==6.0.3
+
+# watchdog (Project 3) — ML anomaly detector
+scikit-learn==1.9.0
+numpy==2.4.6
 
 # test
 pytest==9.1.1
