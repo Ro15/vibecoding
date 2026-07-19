@@ -18,6 +18,18 @@ def _azure_parts(resource_id: str) -> tuple[str, str]:
     return group, name
 
 
+def _gcp_parts(resource_id: str) -> tuple[str, str]:
+    """Extract (zone_or_region_flag, name) from a GCP resource path."""
+    name = resource_id.rstrip("/").rsplit("/", 1)[-1] or "<name>"
+    m = re.search(r"/zones/([^/]+)/", resource_id)
+    if m:
+        return f"--zone={m.group(1)}", name
+    m = re.search(r"/regions/([^/]+)/", resource_id)
+    if m:
+        return f"--region={m.group(1)}", name
+    return "--zone=<zone>", name
+
+
 def _steps_aws(rtype: str, rid: str) -> list[RemStep]:
     if rtype == "disk":
         return [
@@ -70,6 +82,32 @@ def _steps_aws(rtype: str, rid: str) -> list[RemStep]:
             RemStep(2, "Delete the aged snapshot",
                     f"aws ec2 delete-snapshot --snapshot-id {rid}",
                     f"import boto3\nboto3.client('ec2').delete_snapshot(SnapshotId='{rid}')", True),
+        ]
+    if rtype == "lb":
+        return [
+            RemStep(1, "Verify the load balancer has no meaningful traffic",
+                    f"aws elbv2 describe-load-balancers --names {rid}",
+                    f"import boto3\nelb = boto3.client('elbv2')\n"
+                    f"print(elb.describe_load_balancers(Names=['{rid}']))", False),
+            RemStep(2, "Delete the idle load balancer",
+                    f"aws elbv2 delete-load-balancer --load-balancer-arn "
+                    f"$(aws elbv2 describe-load-balancers --names {rid} "
+                    f"--query 'LoadBalancers[0].LoadBalancerArn' --output text)",
+                    f"import boto3\nelb = boto3.client('elbv2')\n"
+                    f"arn = elb.describe_load_balancers(Names=['{rid}'])"
+                    f"['LoadBalancers'][0]['LoadBalancerArn']\n"
+                    f"elb.delete_load_balancer(LoadBalancerArn=arn)", True),
+        ]
+    if rtype == "natgw":
+        return [
+            RemStep(1, "Verify NAT gateway state and low utilization",
+                    f"aws ec2 describe-nat-gateways --nat-gateway-ids {rid}",
+                    f"import boto3\nprint(boto3.client('ec2').describe_nat_gateways("
+                    f"NatGatewayIds=['{rid}']))", False),
+            RemStep(2, "Delete the unused NAT gateway",
+                    f"aws ec2 delete-nat-gateway --nat-gateway-id {rid}",
+                    f"import boto3\nboto3.client('ec2').delete_nat_gateway("
+                    f"NatGatewayId='{rid}')", True),
         ]
     return [RemStep(1, "Manual review required (unrecognized resource type)",
                     f"aws resourcegroupstaggingapi get-resources --resource-arn-list {rid}",
@@ -126,14 +164,134 @@ def _steps_azure(rtype: str, rid: str) -> list[RemStep]:
                     f"az snapshot delete --resource-group {group} --name {name}",
                     sdk_prefix + f"client.snapshots.begin_delete('{group}', '{name}').result()", True),
         ]
+    if rtype == "lb":
+        net_sdk = ("from azure.identity import DefaultAzureCredential\n"
+                   "from azure.mgmt.network import NetworkManagementClient\n"
+                   "net = NetworkManagementClient(DefaultAzureCredential(), subscription_id)\n")
+        return [
+            RemStep(1, "Verify the load balancer has no active backend traffic",
+                    f"az network lb show --resource-group {group} --name {name}",
+                    net_sdk + f"print(net.load_balancers.get('{group}', '{name}'))", False),
+            RemStep(2, "Delete the idle load balancer",
+                    f"az network lb delete --resource-group {group} --name {name}",
+                    net_sdk + f"net.load_balancers.begin_delete('{group}', '{name}').result()", True),
+        ]
+    if rtype == "natgw":
+        net_sdk = ("from azure.identity import DefaultAzureCredential\n"
+                   "from azure.mgmt.network import NetworkManagementClient\n"
+                   "net = NetworkManagementClient(DefaultAzureCredential(), subscription_id)\n")
+        return [
+            RemStep(1, "Verify NAT gateway utilization",
+                    f"az network nat gateway show --resource-group {group} --name {name}",
+                    net_sdk + f"print(net.nat_gateways.get('{group}', '{name}'))", False),
+            RemStep(2, "Delete the unused NAT gateway",
+                    f"az network nat gateway delete --resource-group {group} --name {name}",
+                    net_sdk + f"net.nat_gateways.begin_delete('{group}', '{name}').result()", True),
+        ]
     return [RemStep(1, "Manual review required (unrecognized resource type)",
                     f"az resource show --ids {rid}", "# manual review", False)]
 
 
+def _steps_gcp(rtype: str, rid: str) -> list[RemStep]:
+    loc, name = _gcp_parts(rid)
+    kind = {"disk": "disks", "vm": "instances", "ip": "addresses",
+            "snapshot": "snapshots", "lb": "forwarding-rules",
+            "natgw": "routers"}.get(rtype)
+    if kind is None:
+        return [RemStep(1, "Manual review required (unrecognized resource type)",
+                        f"gcloud asset search-all-resources --query 'name:{name}'",
+                        "# manual review", False)]
+    loc_flag = "" if rtype == "snapshot" else f" {loc}"
+    sdk = (f"from google.cloud import compute_v1\n"
+           f"# use the matching compute_v1 client for '{kind}'\n")
+    return [
+        RemStep(1, f"Verify the {rtype} is safe to remove",
+                f"gcloud compute {kind} describe {name}{loc_flag}",
+                sdk + f"# describe '{name}' and confirm it is unused", False),
+        RemStep(2, f"Delete the {rtype}",
+                f"gcloud compute {kind} delete {name}{loc_flag} --quiet",
+                sdk + f"# delete '{name}'", True),
+    ]
+
+
+_STEPS_BY_PROVIDER = {"aws": _steps_aws, "azure": _steps_azure, "gcp": _steps_gcp}
+
+
+def _resize_plan(provider: str, rid: str) -> list[RemStep]:
+    if provider == "aws":
+        return [
+            RemStep(1, "Verify sustained low CPU before resizing",
+                    f"aws cloudwatch get-metric-statistics --namespace AWS/EC2 "
+                    f"--metric-name CPUUtilization --dimensions Name=InstanceId,Value={rid} "
+                    f"--statistics Average --period 86400 --start-time $(date -d '-14 days' -Iseconds) "
+                    f"--end-time $(date -Iseconds)",
+                    f"import boto3\ncw = boto3.client('cloudwatch')\n"
+                    f"# fetch 14d average CPUUtilization for '{rid}'", False),
+            RemStep(2, "Stop, downsize one instance size, and restart",
+                    f"aws ec2 stop-instances --instance-ids {rid} && "
+                    f"aws ec2 modify-instance-attribute --instance-id {rid} "
+                    f"--instance-type '{{\"Value\": \"<one-size-smaller>\"}}' && "
+                    f"aws ec2 start-instances --instance-ids {rid}",
+                    f"import boto3\nec2 = boto3.client('ec2')\n"
+                    f"ec2.stop_instances(InstanceIds=['{rid}'])\n"
+                    f"ec2.get_waiter('instance_stopped').wait(InstanceIds=['{rid}'])\n"
+                    f"ec2.modify_instance_attribute(InstanceId='{rid}', "
+                    f"InstanceType={{'Value': '<one-size-smaller>'}})\n"
+                    f"ec2.start_instances(InstanceIds=['{rid}'])", True),
+        ]
+    if provider == "azure":
+        group, name = _azure_parts(rid)
+        return [
+            RemStep(1, "List available smaller sizes for this VM",
+                    f"az vm list-vm-resize-options --resource-group {group} --name {name} -o table",
+                    "# review size options one tier below current", False),
+            RemStep(2, "Resize the VM one size down",
+                    f"az vm resize --resource-group {group} --name {name} --size <one-size-smaller>",
+                    f"# ComputeManagementClient: update hardware_profile.vm_size for '{name}'", True),
+        ]
+    loc, name = _gcp_parts(rid)
+    return [
+        RemStep(1, "Verify sustained low CPU before resizing",
+                f"gcloud compute instances describe {name} {loc}",
+                f"# confirm machine type and utilization for '{name}'", False),
+        RemStep(2, "Stop, set a smaller machine type, and restart",
+                f"gcloud compute instances stop {name} {loc} && "
+                f"gcloud compute instances set-machine-type {name} {loc} "
+                f"--machine-type=<one-size-smaller> && "
+                f"gcloud compute instances start {name} {loc}",
+                f"# compute_v1.InstancesClient: set_machine_type for '{name}'", True),
+    ]
+
+
+def _tagging_plan(provider: str, rid: str) -> list[RemStep]:
+    if provider == "aws":
+        return [RemStep(1, "Assign an owner tag so this spend is accountable",
+                        f"aws ec2 create-tags --resources {rid} "
+                        f"--tags Key=owner,Value=<team-name>",
+                        f"import boto3\nboto3.client('ec2').create_tags("
+                        f"Resources=['{rid}'], Tags=[{{'Key': 'owner', "
+                        f"'Value': '<team-name>'}}])", False)]
+    if provider == "azure":
+        return [RemStep(1, "Assign an owner tag so this spend is accountable",
+                        f"az tag update --resource-id {rid} --operation merge "
+                        f"--tags owner=<team-name>",
+                        "# ResourceManagementClient tags.begin_update_at_scope", False)]
+    loc, name = _gcp_parts(rid)
+    return [RemStep(1, "Assign an owner label so this spend is accountable",
+                    f"gcloud compute instances add-labels {name} {loc} "
+                    f"--labels=owner=<team-name>",
+                    f"# add label owner=<team-name> to '{name}'", False)]
+
+
 def build_plan(finding: FindingResult) -> RemediationPlan:
     r = finding.resource
-    steps = _steps_aws(r.resource_type, r.resource_id) if r.provider == "aws" \
-        else _steps_azure(r.resource_type, r.resource_id)
+    if finding.rule == "untagged_resource":
+        steps = _tagging_plan(r.provider, r.resource_id)
+    elif finding.rule == "oversized_vm":
+        steps = _resize_plan(r.provider, r.resource_id)
+    else:
+        builder = _STEPS_BY_PROVIDER.get(r.provider, _steps_aws)
+        steps = builder(r.resource_type, r.resource_id)
     return RemediationPlan(rule=finding.rule, provider=r.provider,
                            resource_id=r.resource_id, steps=steps)
 

@@ -45,9 +45,6 @@ def all_rules() -> dict[str, RuleEntry]:
     return dict(_RULES)
 
 
-def severity_for(monthly_savings: float) -> str:
-    if monthly_savings >= 50.0:
-        return "high"
-    if monthly_savings >= 10.0:
-        return "medium"
-    return "low"
+def severity_for(monthly_savings: float, policies: dict | None = None) -> str:
+    from app.core.policies import severity_for as _sev
+    return _sev(monthly_savings, policies)

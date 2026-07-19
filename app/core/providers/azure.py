@@ -14,6 +14,8 @@ _TYPE_MAP = {
     "microsoft.compute/virtualmachines": "vm",
     "microsoft.network/publicipaddresses": "ip",
     "microsoft.compute/snapshots": "snapshot",
+    "microsoft.network/loadbalancers": "lb",
+    "microsoft.network/natgateways": "natgw",
 }
 
 
@@ -100,11 +102,14 @@ def parse_azure(file_bytes: bytes, billing_period: str | None = None):
                 tags.update(json.loads(raw_tags))
             except (json.JSONDecodeError, TypeError):
                 pass
-        if "avgCpuPct" in info:
-            try:
-                tags["avgCpuPct"] = float(info["avgCpuPct"])
-            except (TypeError, ValueError):
-                pass
+        for key in ("avgCpuPct", "requestCount", "dataProcessedGB"):
+            if key in info:
+                try:
+                    tags[key] = float(info[key])
+                except (TypeError, ValueError):
+                    pass
+        if info.get("stoppedDate"):
+            tags["stoppedDate"] = str(info["stoppedDate"])
 
         period = billing_period or str(item.get("Date") or "")[:7] or "unknown"
 

@@ -24,6 +24,14 @@ def make_resource(**overrides):
     return NormalizedResource(**base)
 
 
+@pytest.fixture(autouse=True)
+def _clean_registry():
+    """Remove test-only entries so the global registry stays pristine."""
+    yield
+    registry._PROVIDERS.pop("testcloud", None)
+    registry._RULES.pop("test_rule", None)
+
+
 def test_provider_registration_and_lookup():
     @registry.provider("testcloud")
     def parse(file_bytes, billing_period=None):
@@ -39,7 +47,7 @@ def test_unknown_provider_raises():
 
 def test_rule_registration_carries_category():
     @registry.rule("test_rule", category="storage")
-    def evaluate(resources):
+    def evaluate(resources, policies=None, today=None):
         return []
 
     entry = registry.all_rules()["test_rule"]

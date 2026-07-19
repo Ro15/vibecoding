@@ -27,6 +27,10 @@ def _resource_type(usage_type: str, product_code: str, resource_id: str) -> str:
         return "disk"
     if "elasticip" in ut or resource_id.startswith("eipalloc-"):
         return "ip"
+    if "loadbalancer" in ut or resource_id.startswith("lb-"):
+        return "lb"
+    if "natgateway" in ut or resource_id.startswith("nat-"):
+        return "natgw"
     if "boxusage" in ut or resource_id.startswith("i-"):
         return "vm"
     return "other"
@@ -75,12 +79,19 @@ def parse_aws(file_bytes: bytes, billing_period: str | None = None):
         tags = {}
         if row.get("resourceTags/user:Name"):
             tags["Name"] = row["resourceTags/user:Name"]
-        cpu = (row.get("resourceTags/aws:cpuAvgPct") or "").strip()
-        if cpu:
-            try:
-                tags["avgCpuPct"] = float(cpu)
-            except ValueError:
-                pass
+        if (row.get("resourceTags/user:owner") or "").strip():
+            tags["owner"] = row["resourceTags/user:owner"].strip()
+        if (row.get("resourceTags/aws:stoppedDate") or "").strip():
+            tags["stoppedDate"] = row["resourceTags/aws:stoppedDate"].strip()
+        for col, key in (("resourceTags/aws:cpuAvgPct", "avgCpuPct"),
+                         ("resourceTags/aws:requestCount", "requestCount"),
+                         ("resourceTags/aws:dataProcessedGB", "dataProcessedGB")):
+            raw = (row.get(col) or "").strip()
+            if raw:
+                try:
+                    tags[key] = float(raw)
+                except ValueError:
+                    pass
 
         if res_id in agg:
             agg[res_id].monthly_cost += cost

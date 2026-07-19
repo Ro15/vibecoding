@@ -10,7 +10,7 @@ def res(**overrides):
     base = dict(
         provider="aws", resource_id="r-1", resource_type="other", region="us-east-1",
         billing_period="2026-06", monthly_cost=40.0, usage_hours=720.0,
-        state="unknown", created_at=date(2026, 6, 1), tags={},
+        state="unknown", created_at=date(2026, 6, 1), tags={"owner": "team-x"},
     )
     base.update(overrides)
     return NormalizedResource(**base)

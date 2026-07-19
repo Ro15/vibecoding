@@ -6,9 +6,9 @@
   "MeterName": "P10 Disks",
   "CostInBillingCurrency": 38.2,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Unattached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -18,9 +18,9 @@
   "MeterName": "P10 Disks",
   "CostInBillingCurrency": 91.0,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Unattached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -30,9 +30,9 @@
   "MeterName": "P10 Disks",
   "CostInBillingCurrency": 6.75,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Unattached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -42,9 +42,9 @@
   "MeterName": "D2s v3",
   "CostInBillingCurrency": 71.3,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"dev\"}",
+  "Tags": "{\"env\": \"dev\", \"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"powerState\": \"stopped\", \"avgCpuPct\": 0.4, \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -56,7 +56,7 @@
   "Quantity": 720,
   "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"dev\"}",
+  "Tags": "{\"env\": \"dev\", \"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"powerState\": \"stopped\", \"avgCpuPct\": 0.4, \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -66,9 +66,9 @@
   "MeterName": "Static Public IP",
   "CostInBillingCurrency": 2.9,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Unassociated\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -80,7 +80,7 @@
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Unassociated\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -90,9 +90,9 @@
   "MeterName": "Snapshots LRS",
   "CostInBillingCurrency": 9.8,
   "Quantity": 720,
-  "ResourceLocation": "westeurope",
+  "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"retention\": \"unknown\"}",
+  "Tags": "{\"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"createdDate\": \"2025-11-02\"}"
  },
  {
@@ -104,7 +104,7 @@
   "Quantity": 720,
   "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"retention\": \"unknown\"}",
+  "Tags": "{\"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"createdDate\": \"2025-11-02\"}"
  },
  {
@@ -116,19 +116,67 @@
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"retention\": \"unknown\"}",
+  "Tags": "{\"owner\": \"team-platform\"}",
   "AdditionalInfo": "{\"createdDate\": \"2025-11-02\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-net/providers/Microsoft.Network/loadBalancers/idle-lb-0",
+  "ResourceType": "Microsoft.Network/loadBalancers",
+  "MeterCategory": "Virtual Network",
+  "MeterName": "Standard LB",
+  "CostInBillingCurrency": 19.75,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-06-01",
+  "Tags": "{\"owner\": \"team-platform\"}",
+  "AdditionalInfo": "{\"requestCount\": 8, \"createdDate\": \"2026-06-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-net/providers/Microsoft.Network/natGateways/unused-nat-0",
+  "ResourceType": "Microsoft.Network/natGateways",
+  "MeterCategory": "Virtual Network",
+  "MeterName": "NAT Gateway",
+  "CostInBillingCurrency": 29.9,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-06-01",
+  "Tags": "{\"owner\": \"team-platform\"}",
+  "AdditionalInfo": "{\"dataProcessedGB\": 0.1, \"createdDate\": \"2026-06-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/oversize-vm-0",
+  "ResourceType": "Microsoft.Compute/virtualMachines",
+  "MeterCategory": "Virtual Machines",
+  "MeterName": "D8s v3",
+  "CostInBillingCurrency": 120.0,
+  "Quantity": 720,
+  "ResourceLocation": "westeurope",
+  "Date": "2026-06-01",
+  "Tags": "{\"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 24.0, \"createdDate\": \"2026-06-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/untag-disk-0",
+  "ResourceType": "Microsoft.Compute/disks",
+  "MeterCategory": "Storage",
+  "MeterName": "P10 Disks",
+  "CostInBillingCurrency": 24.6,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-06-01",
+  "Tags": "{\"env\": \"prod\"}",
+  "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/app-disk-0",
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 31.5009,
+  "CostInBillingCurrency": 6.5573,
   "Quantity": 720,
   "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -136,11 +184,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 16.3929,
+  "CostInBillingCurrency": 29.6454,
   "Quantity": 720,
-  "ResourceLocation": "westeurope",
+  "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -148,11 +196,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 45.1823,
+  "CostInBillingCurrency": 6.9009,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -160,11 +208,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 8.8106,
+  "CostInBillingCurrency": 47.4185,
   "Quantity": 720,
-  "ResourceLocation": "westeurope",
+  "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -172,11 +220,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 22.0692,
+  "CostInBillingCurrency": 34.3468,
   "Quantity": 720,
-  "ResourceLocation": "westeurope",
+  "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -184,11 +232,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 27.8183,
+  "CostInBillingCurrency": 24.5926,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -196,11 +244,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 38.3416,
+  "CostInBillingCurrency": 33.5249,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -208,11 +256,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 7.0912,
+  "CostInBillingCurrency": 35.5885,
   "Quantity": 720,
   "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -220,11 +268,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 44.8302,
+  "CostInBillingCurrency": 37.526,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -232,11 +280,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 16.6815,
+  "CostInBillingCurrency": 51.67,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -244,11 +292,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 31.3506,
+  "CostInBillingCurrency": 38.156,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -256,11 +304,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 25.516,
+  "CostInBillingCurrency": 16.173,
   "Quantity": 720,
   "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -268,11 +316,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 27.594,
+  "CostInBillingCurrency": 10.6748,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -280,11 +328,11 @@
   "ResourceType": "Microsoft.Compute/disks",
   "MeterCategory": "Storage",
   "MeterName": "P10 Disks",
-  "CostInBillingCurrency": 26.5997,
+  "CostInBillingCurrency": 27.3185,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -292,108 +340,108 @@
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 46.0706,
+  "CostInBillingCurrency": 41.1179,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 77.98475672350884, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 47.56412523848716, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/app-vm-1",
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 151.164,
+  "CostInBillingCurrency": 65.5785,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 25.81022218925441, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 49.635979962826354, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/app-vm-2",
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 98.2769,
+  "CostInBillingCurrency": 81.8811,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 71.20227561196401, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 75.77445848695899, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/app-vm-3",
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 148.2931,
+  "CostInBillingCurrency": 84.3433,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 39.633252733499546, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 60.336460055269846, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/app-vm-4",
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 158.2371,
+  "CostInBillingCurrency": 105.1862,
   "Quantity": 720,
   "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 75.22367478135666, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 66.40872180040826, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/app-vm-5",
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 134.2155,
+  "CostInBillingCurrency": 158.468,
   "Quantity": 720,
-  "ResourceLocation": "westeurope",
+  "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 42.49548658936059, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 68.37521212994042, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/app-vm-6",
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 154.8781,
+  "CostInBillingCurrency": 106.5523,
   "Quantity": 720,
-  "ResourceLocation": "westeurope",
+  "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 25.061793642814166, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 77.86255013744864, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/app-vm-7",
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 75.6049,
+  "CostInBillingCurrency": 56.1149,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 52.64671890305665, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 76.13994474519981, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/app-vm-8",
   "ResourceType": "Microsoft.Compute/virtualMachines",
   "MeterCategory": "Virtual Machines",
   "MeterName": "D2s v3",
-  "CostInBillingCurrency": 105.0634,
+  "CostInBillingCurrency": 129.09,
   "Quantity": 720,
-  "ResourceLocation": "westeurope",
+  "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{\"env\": \"prod\"}",
-  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 18.7157427389864, \"createdDate\": \"2026-06-01\"}"
+  "Tags": "{\"env\": \"prod\", \"owner\": \"team-data\"}",
+  "AdditionalInfo": "{\"powerState\": \"running\", \"avgCpuPct\": 54.53218743101857, \"createdDate\": \"2026-06-01\"}"
  },
  {
   "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-net/providers/Microsoft.Network/publicIPAddresses/app-ip-0",
@@ -402,9 +450,9 @@
   "MeterName": "Static Public IP",
   "CostInBillingCurrency": 2.9,
   "Quantity": 720,
-  "ResourceLocation": "westeurope",
+  "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Associated\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -414,9 +462,9 @@
   "MeterName": "Static Public IP",
   "CostInBillingCurrency": 2.9,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Associated\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -428,7 +476,7 @@
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-app\"}",
   "AdditionalInfo": "{\"attachmentState\": \"Associated\", \"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -436,11 +484,11 @@
   "ResourceType": "Microsoft.Compute/snapshots",
   "MeterCategory": "Storage",
   "MeterName": "Snapshots LRS",
-  "CostInBillingCurrency": 14.4509,
+  "CostInBillingCurrency": 10.625,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -448,11 +496,11 @@
   "ResourceType": "Microsoft.Compute/snapshots",
   "MeterCategory": "Storage",
   "MeterName": "Snapshots LRS",
-  "CostInBillingCurrency": 12.9188,
+  "CostInBillingCurrency": 8.0757,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -460,11 +508,11 @@
   "ResourceType": "Microsoft.Compute/snapshots",
   "MeterCategory": "Storage",
   "MeterName": "Snapshots LRS",
-  "CostInBillingCurrency": 9.3305,
+  "CostInBillingCurrency": 13.6747,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -472,11 +520,11 @@
   "ResourceType": "Microsoft.Compute/snapshots",
   "MeterCategory": "Storage",
   "MeterName": "Snapshots LRS",
-  "CostInBillingCurrency": 6.6529,
+  "CostInBillingCurrency": 2.2922,
   "Quantity": 720,
-  "ResourceLocation": "eastus",
+  "ResourceLocation": "westeurope",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"createdDate\": \"2026-06-01\"}"
  },
  {
@@ -484,11 +532,35 @@
   "ResourceType": "Microsoft.Compute/snapshots",
   "MeterCategory": "Storage",
   "MeterName": "Snapshots LRS",
-  "CostInBillingCurrency": 9.1049,
+  "CostInBillingCurrency": 12.6109,
   "Quantity": 720,
   "ResourceLocation": "eastus",
   "Date": "2026-06-01",
-  "Tags": "{}",
+  "Tags": "{\"owner\": \"team-data\"}",
   "AdditionalInfo": "{\"createdDate\": \"2026-06-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-net/providers/Microsoft.Network/loadBalancers/app-lb-0",
+  "ResourceType": "Microsoft.Network/loadBalancers",
+  "MeterCategory": "Virtual Network",
+  "MeterName": "Standard LB",
+  "CostInBillingCurrency": 21.0,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-06-01",
+  "Tags": "{\"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"requestCount\": 500000, \"createdDate\": \"2026-06-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-net/providers/Microsoft.Network/natGateways/app-nat-0",
+  "ResourceType": "Microsoft.Network/natGateways",
+  "MeterCategory": "Virtual Network",
+  "MeterName": "NAT Gateway",
+  "CostInBillingCurrency": 33.0,
+  "Quantity": 720,
+  "ResourceLocation": "westeurope",
+  "Date": "2026-06-01",
+  "Tags": "{\"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"dataProcessedGB\": 300, \"createdDate\": \"2026-06-01\"}"
  }
 ]

@@ -1,0 +1,7 @@
+ProviderName,ResourceId,ResourceName,ResourceType,ServiceName,BilledCost,ConsumedQuantity,RegionId,ChargePeriodStart,Tags
+AWS,vol-focus0001,focus-orphan-vol,Storage Volume,Amazon EBS,18.5000,720.00,us-east-1,2026-06-01T00:00:00Z,"{""owner"": ""team-focus"", ""x_state"": ""unattached""}"
+AWS,snap-focus0001,focus-old-snap,Snapshot,Amazon EBS,6.2000,720.00,us-east-1,2026-06-01T00:00:00Z,"{""owner"": ""team-focus"", ""x_createdDate"": ""2025-10-01""}"
+Microsoft Azure,/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/focus-vm-2,focus-vm-2,Virtual Machine,Virtual Machines,12.0000,720.00,eastus,2026-06-01T00:00:00Z,"{""owner"": ""team-focus"", ""x_state"": ""stopped""}"
+Microsoft Azure,/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/focus-disk-1,focus-disk-1,Storage Volume,Storage,22.1000,720.00,eastus,2026-06-01T00:00:00Z,"{""owner"": ""team-focus"", ""x_state"": ""attached""}"
+Google Cloud,projects/demo-project/global/addresses/focus-ip-1,focus-ip-1,Public IP Address,Compute Engine,2.9000,720.00,us-central1,2026-06-01T00:00:00Z,"{""owner"": ""team-focus"", ""x_state"": ""unassociated""}"
+Google Cloud,projects/demo-project/zones/us-central1-a/instances/focus-vm-1,focus-vm-1,Virtual Machine,Compute Engine,84.0000,720.00,us-central1,2026-06-01T00:00:00Z,"{""owner"": ""team-focus"", ""x_state"": ""running"", ""avgCpuPct"": 70}"

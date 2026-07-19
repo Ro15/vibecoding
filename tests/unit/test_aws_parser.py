@@ -18,7 +18,7 @@ def csv_bytes(*rows):
 def test_parses_sample_file_without_errors():
     resources, errors = parse_aws(SAMPLE)
     assert errors == []
-    assert len(resources) == 53
+    assert len(resources) == 64
     assert all(r.provider == "aws" for r in resources)
 
 

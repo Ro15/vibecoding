@@ -138,4 +138,17 @@ Single page, vanilla JS + vendored Chart.js (no build toolchain). Frosted transl
 
 ## 12. Production-hardening backlog
 
-API-key/SSO auth, HTTPS, Postgres swap (repo adapter ready), real CUR/FOCUS schema coverage, CloudWatch/Azure Monitor metrics for true idleness, execution engine with approval gates and audit trail, multi-currency, RBAC.
+HTTPS, Postgres swap (repo adapter ready), CloudWatch/Azure Monitor metrics for true idleness, multi-currency, SSO/RBAC beyond API keys, real cloud execution (executor is simulated in v1.1).
+
+## 13. v1.1 feature expansion (approved 2026-07-18, Turn 10)
+
+1. **Realized savings**: marking a finding `remediated` (via PATCH or execution) stamps `remediated_at` + freezes `realized_monthly_savings`; summary exposes the realized total; new dashboard tile.
+2. **Multi-month trends**: `GET /api/trends` groups resources by `billing_period` and runs rules per period (findings table stays "current-state"; analyze scans only the latest period). Prev-month sample files added. Dashboard "Waste by month" chart.
+3. **Policy engine**: `policies` table (key/value overrides over defaults): snapshot retention, idle-CPU %, rightsize-CPU %, stopped-VM age, severity bands, owner tag keys, untagged min cost, LB/NAT thresholds. `GET/PUT /api/policies` + settings panel.
+4. **Ownership**: `owner` tag parsed by all providers; findings carry owner; summary `by_owner`; new `untagged_resource` rule (category `governance`, remediation = tagging command, min-cost threshold).
+5. **Scheduled scans**: APScheduler; `GET/PUT /api/schedule` (enabled/interval/webhook_url stored as policies); job = run scan + POST JSON digest to webhook.
+6. **GCP provider**: `@provider("gcp")` parsing billing-export JSON (nested service/sku/labels schema) with disk/vm/ip/snapshot/lb/natgw mapping; gcloud remediation commands.
+7. **New rules**: `oversized_vm` (running, CPU between idle and rightsize thresholds → savings = 50% of cost, resize plan), `idle_load_balancer` (requests below threshold), `unused_nat_gateway` (GB processed below threshold), `aged_stopped_vm` (stoppedDate older than threshold → terminate plan; idle_vm defers to it).
+8. **Guarded execution (simulated)**: `POST /api/findings/{id}/execute` `{dry_run, approve}` — non-dry-run requires `approve:true`; SimulatedExecutor echoes commands (no cloud credentials in scope — by design the tool still never touches a real account); `executions` audit table + `GET /api/executions`; real-run marks finding remediated.
+9. **Auth**: optional `X-API-Key` — viewer key (reads) / operator key (mutations + execution) via `COSTOPT_VIEWER_KEY` / `COSTOPT_OPERATOR_KEY` env; unset = auth off (local mode). 401 (missing) / 403 (wrong).
+10. **FOCUS ingestion**: `@provider("focus")` parsing FinOps-Foundation FOCUS-style CSV/JSON; `ProviderName` column sets each resource's actual provider.

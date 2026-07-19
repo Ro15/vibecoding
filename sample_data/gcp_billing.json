@@ -1,0 +1,406 @@
+[
+ {
+  "resource": {
+   "name": "projects/demo-project/zones/us-central1-a/disks/orphan-disk-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "Storage PD Capacity"
+  },
+  "cost": 27.3,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "attachment_state",
+    "value": "unattached"
+   },
+   {
+    "key": "owner",
+    "value": "team-ml"
+   },
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/zones/us-central1-a/instances/idle-vm-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "N1 Instance Core"
+  },
+  "cost": 52.0,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "power_state",
+    "value": "stopped"
+   },
+   {
+    "key": "owner",
+    "value": "team-ml"
+   },
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/global/addresses/orphan-ip-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "Static Ip Charge"
+  },
+  "cost": 2.92,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "attachment_state",
+    "value": "unassociated"
+   },
+   {
+    "key": "owner",
+    "value": "team-ml"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/global/snapshots/old-snap-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "Storage PD Snapshot"
+  },
+  "cost": 11.4,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "created_date",
+    "value": "2025-11-02"
+   },
+   {
+    "key": "owner",
+    "value": "team-ml"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/zones/us-central1-a/instances/oversized-vm-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "N1 Instance Core"
+  },
+  "cost": 88.0,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "power_state",
+    "value": "running"
+   },
+   {
+    "key": "avg_cpu_pct",
+    "value": "25.0"
+   },
+   {
+    "key": "owner",
+    "value": "team-ml"
+   },
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/zones/us-central1-a/instances/mystery-vm-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "N1 Instance Core"
+  },
+  "cost": 61.0,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "power_state",
+    "value": "running"
+   },
+   {
+    "key": "avg_cpu_pct",
+    "value": "60.0"
+   },
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/zones/us-central1-a/disks/app-disk-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "Storage PD Capacity"
+  },
+  "cost": 18.1,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "attachment_state",
+    "value": "attached"
+   },
+   {
+    "key": "owner",
+    "value": "team-web"
+   },
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/zones/us-central1-a/disks/app-disk-1"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "Storage PD Capacity"
+  },
+  "cost": 9.75,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "attachment_state",
+    "value": "attached"
+   },
+   {
+    "key": "owner",
+    "value": "team-web"
+   },
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/zones/us-central1-a/instances/app-vm-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "N1 Instance Core"
+  },
+  "cost": 104.0,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "power_state",
+    "value": "running"
+   },
+   {
+    "key": "avg_cpu_pct",
+    "value": "72.0"
+   },
+   {
+    "key": "owner",
+    "value": "team-web"
+   },
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/zones/us-central1-a/instances/app-vm-1"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "N1 Instance Core"
+  },
+  "cost": 97.5,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "power_state",
+    "value": "running"
+   },
+   {
+    "key": "avg_cpu_pct",
+    "value": "64.0"
+   },
+   {
+    "key": "owner",
+    "value": "team-web"
+   },
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/global/addresses/app-ip-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "Static Ip Charge"
+  },
+  "cost": 0.0,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "attachment_state",
+    "value": "associated"
+   },
+   {
+    "key": "owner",
+    "value": "team-web"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ },
+ {
+  "resource": {
+   "name": "projects/demo-project/global/snapshots/new-snap-0"
+  },
+  "service": {
+   "description": "Compute Engine"
+  },
+  "sku": {
+   "description": "Storage PD Snapshot"
+  },
+  "cost": 4.2,
+  "usage": {
+   "amount": 720,
+   "unit": "hour"
+  },
+  "location": {
+   "region": "us-central1"
+  },
+  "labels": [
+   {
+    "key": "created_date",
+    "value": "2026-06-01"
+   },
+   {
+    "key": "owner",
+    "value": "team-web"
+   }
+  ],
+  "usage_start_time": "2026-06-01T00:00:00Z"
+ }
+]

@@ -1,0 +1,98 @@
+[
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/orphan-disk-0",
+  "ResourceType": "Microsoft.Compute/disks",
+  "MeterCategory": "Storage",
+  "MeterName": "P10 Disks",
+  "CostInBillingCurrency": 36.5,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-05-01",
+  "Tags": "{\"owner\": \"team-platform\"}",
+  "AdditionalInfo": "{\"attachmentState\": \"Unattached\", \"createdDate\": \"2026-05-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/orphan-disk-1",
+  "ResourceType": "Microsoft.Compute/disks",
+  "MeterCategory": "Storage",
+  "MeterName": "P10 Disks",
+  "CostInBillingCurrency": 89.0,
+  "Quantity": 720,
+  "ResourceLocation": "westeurope",
+  "Date": "2026-05-01",
+  "Tags": "{\"owner\": \"team-platform\"}",
+  "AdditionalInfo": "{\"attachmentState\": \"Unattached\", \"createdDate\": \"2026-05-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/virtualMachines/idle-vm-0",
+  "ResourceType": "Microsoft.Compute/virtualMachines",
+  "MeterCategory": "Virtual Machines",
+  "MeterName": "D2s v3",
+  "CostInBillingCurrency": 69.8,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-05-01",
+  "Tags": "{\"owner\": \"team-platform\"}",
+  "AdditionalInfo": "{\"powerState\": \"stopped\", \"avgCpuPct\": 0.3, \"createdDate\": \"2026-05-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/app-disk-0",
+  "ResourceType": "Microsoft.Compute/disks",
+  "MeterCategory": "Storage",
+  "MeterName": "P10 Disks",
+  "CostInBillingCurrency": 41.8028,
+  "Quantity": 720,
+  "ResourceLocation": "westeurope",
+  "Date": "2026-05-01",
+  "Tags": "{\"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-05-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/app-disk-1",
+  "ResourceType": "Microsoft.Compute/disks",
+  "MeterCategory": "Storage",
+  "MeterName": "P10 Disks",
+  "CostInBillingCurrency": 32.6063,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-05-01",
+  "Tags": "{\"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-05-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/app-disk-2",
+  "ResourceType": "Microsoft.Compute/disks",
+  "MeterCategory": "Storage",
+  "MeterName": "P10 Disks",
+  "CostInBillingCurrency": 7.8374,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-05-01",
+  "Tags": "{\"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-05-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/app-disk-3",
+  "ResourceType": "Microsoft.Compute/disks",
+  "MeterCategory": "Storage",
+  "MeterName": "P10 Disks",
+  "CostInBillingCurrency": 31.8251,
+  "Quantity": 720,
+  "ResourceLocation": "westeurope",
+  "Date": "2026-05-01",
+  "Tags": "{\"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-05-01\"}"
+ },
+ {
+  "ResourceId": "/subscriptions/aaaabbbb-1111-2222-3333-ccccddddeeee/resourceGroups/rg-app/providers/Microsoft.Compute/disks/app-disk-4",
+  "ResourceType": "Microsoft.Compute/disks",
+  "MeterCategory": "Storage",
+  "MeterName": "P10 Disks",
+  "CostInBillingCurrency": 33.708,
+  "Quantity": 720,
+  "ResourceLocation": "eastus",
+  "Date": "2026-05-01",
+  "Tags": "{\"owner\": \"team-app\"}",
+  "AdditionalInfo": "{\"attachmentState\": \"Attached\", \"createdDate\": \"2026-05-01\"}"
+ }
+]

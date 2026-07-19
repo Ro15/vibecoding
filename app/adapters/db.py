@@ -3,12 +3,15 @@ from __future__ import annotations
 
 import json
 from contextlib import contextmanager
+from datetime import date
 
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session, sessionmaker
 
-from app.adapters.orm import Base, Finding, IngestedFile, RawLine, Resource, Scan
+from app.adapters.orm import (Base, Execution, Finding, IngestedFile, Policy,
+                              RawLine, Resource, Scan)
 from app.core.models import FindingResult, NormalizedResource
+from app.core.policies import DEFAULTS, merge_policies
 
 VALID_STATUSES = ("open", "dismissed", "remediated", "stale")
 
@@ -107,18 +110,21 @@ def apply_findings(session: Session, scan: Scan, results: list[FindingResult]) -
         seen_keys.add(key)
         row = session.scalar(select(Finding).where(
             Finding.resource_id == fr.resource.resource_id, Finding.rule == fr.rule))
+        owner = str(fr.resource.tags.get("owner") or fr.resource.tags.get("team") or "")
         if row is None:
             session.add(Finding(
                 provider=fr.resource.provider, resource_id=fr.resource.resource_id,
                 resource_type=fr.resource.resource_type, region=fr.resource.region,
                 rule=fr.rule, category=fr.category, severity=fr.severity,
                 est_monthly_savings=fr.est_monthly_savings, reason=fr.reason,
-                status="open", first_seen_scan_id=scan.id, last_seen_scan_id=scan.id))
+                status="open", owner=owner,
+                first_seen_scan_id=scan.id, last_seen_scan_id=scan.id))
             stats["new"] += 1
         else:
             row.est_monthly_savings = fr.est_monthly_savings
             row.severity = fr.severity
             row.reason = fr.reason
+            row.owner = owner
             row.last_seen_scan_id = scan.id
             if row.status == "stale":
                 row.status = "open"  # reappeared
@@ -163,9 +169,49 @@ def set_finding_status(session: Session, finding_id: int, status: str) -> Findin
         raise ValueError(f"invalid status {status!r}; must be one of {VALID_STATUSES}")
     row = get_finding(session, finding_id)
     row.status = status
+    if status == "remediated" and row.remediated_at is None:
+        row.remediated_at = date.today()
+        row.realized_monthly_savings = row.est_monthly_savings
     session.flush()
     return row
 
 
 def list_scans(session: Session) -> list[Scan]:
     return list(session.scalars(select(Scan).order_by(Scan.id)))
+
+
+# --- policies ---
+
+def get_policies(session: Session) -> dict:
+    overrides = {p.key: p.value for p in session.scalars(select(Policy))}
+    return merge_policies(overrides)
+
+
+def set_policies(session: Session, updates: dict) -> dict:
+    for key, value in updates.items():
+        if key not in DEFAULTS:
+            raise ValueError(f"unknown policy key {key!r}")
+        row = session.scalar(select(Policy).where(Policy.key == key))
+        if row is None:
+            session.add(Policy(key=key, value=str(value)))
+        else:
+            row.value = str(value)
+    session.flush()
+    return get_policies(session)
+
+
+# --- executions ---
+
+def record_execution(session: Session, finding_id: int, actor: str, executor: str,
+                     dry_run: bool, commands: list[str], output: str,
+                     succeeded: bool) -> Execution:
+    row = Execution(finding_id=finding_id, actor=actor, executor=executor,
+                    dry_run=dry_run, commands_json=json.dumps(commands),
+                    output=output, succeeded=succeeded)
+    session.add(row)
+    session.flush()
+    return row
+
+
+def list_executions(session: Session) -> list[Execution]:
+    return list(session.scalars(select(Execution).order_by(Execution.id.desc())))

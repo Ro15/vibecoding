@@ -96,3 +96,14 @@ ui-styling, brand, banner-design, slides). All SKILL.md frontmatter validated;
 ui-ux-pro-max's search.py smoke-tested. New skills register at session start.
 
 ---
+
+## Turn 10 — 23:00
+
+> add all 10 features and test them just as you did before
+
+Scope: implement the full top-10 roadmap (realized savings, monthly trends, policy
+engine, ownership/tags, scheduled scans + webhook digest, GCP provider, 5 new rules
+incl. rightsizing, guarded simulated execution, API-key auth, FOCUS ingestion) with
+unit + API + Playwright + agent-browser testing.
+
+---

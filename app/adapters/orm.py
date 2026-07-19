@@ -72,5 +72,28 @@ class Finding(Base):
     est_monthly_savings: Mapped[float] = mapped_column(Float)
     reason: Mapped[str] = mapped_column(Text)
     status: Mapped[str] = mapped_column(String(16), default="open")
+    owner: Mapped[str] = mapped_column(String(128), default="")
+    remediated_at: Mapped[date | None] = mapped_column(Date, nullable=True)
+    realized_monthly_savings: Mapped[float] = mapped_column(Float, default=0.0)
     first_seen_scan_id: Mapped[int | None] = mapped_column(ForeignKey("scans.id"), nullable=True)
     last_seen_scan_id: Mapped[int | None] = mapped_column(ForeignKey("scans.id"), nullable=True)
+
+
+class Policy(Base):
+    __tablename__ = "policies"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    key: Mapped[str] = mapped_column(String(64), unique=True)
+    value: Mapped[str] = mapped_column(String(512))
+
+
+class Execution(Base):
+    __tablename__ = "executions"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    finding_id: Mapped[int] = mapped_column(ForeignKey("findings.id"))
+    actor: Mapped[str] = mapped_column(String(64), default="anonymous")
+    executor: Mapped[str] = mapped_column(String(32), default="simulated")
+    dry_run: Mapped[bool] = mapped_column(default=True)
+    commands_json: Mapped[str] = mapped_column(Text, default="[]")
+    output: Mapped[str] = mapped_column(Text, default="")
+    succeeded: Mapped[bool] = mapped_column(default=True)
+    executed_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)

@@ -27,7 +27,7 @@ def item(**overrides):
 def test_parses_sample_file():
     resources, errors = parse_azure(SAMPLE)
     assert errors == []
-    assert len(resources) == 41
+    assert len(resources) == 47
     assert all(r.provider == "azure" for r in resources)
 
 
