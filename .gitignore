@@ -5,3 +5,4 @@ __pycache__/
 costopt.db
 *.db
 test-results/
+.pytest_tmp/
