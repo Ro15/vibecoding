@@ -237,4 +237,21 @@ Composed a joyful/soft-tone honest note and created it as a Gmail DRAFT (no send
 available; addressed to self as placeholder — user swaps in hiring-team recipient before
 sending). Draft id r5427471801855263848.
 
+## Turn 20 — 00:5x
+
+> did you attach all the required documents and files
+
+Answered honestly: no — the note draft has no attachments, and the Gmail draft tool can't
+attach files. Gave checklist status (most deliverables travel as links) + offered to build
+a full submission draft.
+
+## Turn 21 — 01:0x
+
+> do it in another draft adding all the material and the note
+
+Created a second Gmail draft: full submission email with all 5 deliverables as inline links
+(GitHub repo, prompts.md, deck repo + artifact URL, Tag summary inline, decommission
+confirmation) + the joyful note woven in. Draft id r-5483353814926281511. Addressed to self
+(swap recipient); Tagle screenshot to be attached manually; artifact needs share-enabling.
+
 ---
