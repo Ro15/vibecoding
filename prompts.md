@@ -218,3 +218,23 @@ architecture, 221 tests, Vega staging product (dev→hosting→compliance), and 
 vibe-coding 15X thesis. Committed + pushed to main.
 
 ---
+
+## Turn 18 — 00:5x
+
+> rohithreddyravi4@gmail.com this is the email we need to send from and change in
+> presentation as well
+
+Updated email to rohithreddyravi4@gmail.com in deck.html + deck.md, re-published artifact
+(same URL), pushed.
+
+## Turn 19 — 00:5x
+
+> send out email saying i know i havent used the right prompts and right structure of vibe
+> coding, but i do have extensive knowledge in using skills and plugins to get the best
+> output from claude and will try learning a lot... joyful and soft tone
+
+Composed a joyful/soft-tone honest note and created it as a Gmail DRAFT (no send tool
+available; addressed to self as placeholder — user swaps in hiring-team recipient before
+sending). Draft id r5427471801855263848.
+
+---
