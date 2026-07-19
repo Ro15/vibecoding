@@ -152,4 +152,4 @@ AI doesn't make me 15% faster. **It makes me 15× bigger.**
 
 Three platforms, one core, a live product, and a complete audit trail — all directed, not typed.
 
-**Rohith Ravi** · `ravi.rohit15@gmail.com` · `github.com/Ro15/vibecoding`
+**Rohith Ravi** · `rohithreddyravi4@gmail.com` · `github.com/Ro15/vibecoding`
