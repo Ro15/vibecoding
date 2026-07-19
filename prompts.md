@@ -52,3 +52,19 @@ executed with TDD; final state 82 automated tests green (72 pytest unit/API +
 screenshots; MVP running at http://127.0.0.1:8001.
 
 ---
+
+## Turn 6 — 22:56
+
+> https://github.com/vercel-labs/agent-browser.git use this and test the application from web app
+
+Result: installed agent-browser 0.32.2 (+ its Chrome 151 runtime) and drove the full
+journey against a fresh instance (port 8002, empty DB) through the real UI:
+empty state → AWS upload (53 resources) → Azure upload (41) → Run Analysis
+($592.50/mo, 21 findings, 94 resources, 5 top offenders) → expand finding
+(verify + destructive az-cli commands shown) → dismiss (tiles live-updated to
+$501.50/20 open) → duplicate-upload guard confirmed → remediation script content
+verified in-page → theme toggle to light → charts re-rendered → screenshot.
+One tool quirk: agent-browser's own CDP download capture canceled the .sh download;
+the endpoint itself verified via in-page fetch (and passes in the Playwright suite).
+
+---
