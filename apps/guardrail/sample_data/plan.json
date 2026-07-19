@@ -1,0 +1,52 @@
+{
+ "format_version": "1.1",
+ "terraform_version": "1.7.0",
+ "planned_values": {
+  "root_module": {
+   "resources": [
+    {
+     "address": "aws_s3_bucket.public",
+     "type": "aws_s3_bucket",
+     "name": "public",
+     "values": {
+      "bucket": "planned-public",
+      "acl": "public-read"
+     }
+    },
+    {
+     "address": "aws_db_instance.db",
+     "type": "aws_db_instance",
+     "name": "db",
+     "values": {
+      "publicly_accessible": true,
+      "storage_encrypted": false
+     }
+    }
+   ],
+   "child_modules": [
+    {
+     "address": "module.net",
+     "resources": [
+      {
+       "address": "module.net.aws_security_group.open",
+       "type": "aws_security_group",
+       "name": "open",
+       "values": {
+        "ingress": [
+         {
+          "from_port": 22,
+          "to_port": 22,
+          "protocol": "tcp",
+          "cidr_blocks": [
+           "0.0.0.0/0"
+          ]
+         }
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

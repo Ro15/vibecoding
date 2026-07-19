@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guardrail — Security Auditor</title>
+<link rel="stylesheet" href="/static/theme.css">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="bg-blobs" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<header class="topbar glass">
+  <div class="brand">
+    <span class="logo">🛡</span>
+    <div>
+      <h1>Guardrail</h1>
+      <p class="sub">Enterprise Security Guardrail Auditor</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <form id="upload-form" class="upload">
+      <select id="format-select" aria-label="Format">
+        <option value="hcl">Terraform (.tf)</option>
+        <option value="cloudformation">CloudFormation</option>
+        <option value="tfplan">Terraform plan JSON</option>
+      </select>
+      <label class="file-label glass-btn">
+        <input type="file" id="file-input" accept=".tf,.json,.yaml,.yml,.template" hidden>
+        <span id="file-name">Choose IaC file…</span>
+      </label>
+      <button type="submit" class="glass-btn accent">Scan</button>
+    </form>
+    <button id="btn-theme" class="glass-btn" title="Toggle theme">◐</button>
+  </div>
+</header>
+
+<main>
+  <section class="top-grid">
+    <div class="card glass score-card">
+      <h2>Risk Score</h2>
+      <div class="gauge-wrap">
+        <canvas id="gauge" width="240" height="140"></canvas>
+        <div class="gauge-center"><span id="grade" class="grade">—</span><span id="score-num" class="score-num">—</span></div>
+      </div>
+      <p class="score-meta" id="scan-source">No scan yet</p>
+    </div>
+    <div class="card glass">
+      <h2>Findings by severity</h2>
+      <div class="chart-box"><canvas id="chart-severity"></canvas></div>
+    </div>
+    <div class="card glass">
+      <h2>Findings by resource type</h2>
+      <div class="chart-box"><canvas id="chart-rtype"></canvas></div>
+    </div>
+    <div class="card glass">
+      <h2>Risk trend (per scan)</h2>
+      <div class="chart-box"><canvas id="chart-trend"></canvas></div>
+    </div>
+  </section>
+
+  <section class="tiles">
+    <div class="tile glass"><p class="tile-label">Resources scanned</p><p class="tile-value" id="tile-resources">—</p></div>
+    <div class="tile glass"><p class="tile-label">Total findings</p><p class="tile-value" id="tile-findings">—</p></div>
+    <div class="tile glass"><p class="tile-label">Critical + High</p><p class="tile-value" id="tile-highrisk">—</p></div>
+    <div class="tile glass"><p class="tile-label">Frameworks flagged</p><p class="tile-value" id="tile-frameworks">—</p></div>
+  </section>
+
+  <section class="card glass findings-card">
+    <div class="findings-head">
+      <h2>Findings</h2>
+      <div class="filters">
+        <select id="filter-severity"><option value="">All severities</option><option value="critical">Critical</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select>
+        <select id="filter-rtype"><option value="">All resource types</option></select>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="findings-table">
+        <thead><tr><th></th><th>Severity</th><th>Policy</th><th>Resource</th><th>Type</th><th>Framework</th><th>Source</th></tr></thead>
+        <tbody><tr class="empty-row"><td colspan="7">No scan yet — upload a Terraform or CloudFormation file and press Scan.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="/static/chart.umd.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
