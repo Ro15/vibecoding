@@ -106,4 +106,12 @@ engine, ownership/tags, scheduled scans + webhook digest, GCP provider, 5 new ru
 incl. rightsizing, guarded simulated execution, API-key auth, FOCUS ingestion) with
 unit + API + Playwright + agent-browser testing.
 
+Result (23:00–23:28): all 10 features shipped. 112 pytest unit/API tests + 12
+Playwright journey tests green. agent-browser round on a fresh instance verified:
+5 export formats ingested via UI (142 resources, 2 billing months), 44 findings /
+$1,119.77/mo across aws+azure+gcp, dry-run + approved simulated execution (realized
+tile $91/mo, 2 audit records), retention policy change via settings UI dropped 8
+snapshot findings (43→35) and restore brought them back, scheduler job went live
+(interval 720m) and was disabled again. Dashboard v1.1 screenshot verified.
+
 ---
