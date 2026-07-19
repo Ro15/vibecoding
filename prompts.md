@@ -149,3 +149,12 @@ Playwright + 7 new common tests green; CostOpt boots from apps.costopt.api.main.
 Next: Phase 1 = Project 2 (guardrail), Phase 2 = Project 3 (watchdog).
 
 ---
+
+## Turn 13 — 23:49
+
+> are you buliding both together?
+
+Response: clarified the sequencing — shared common/ core built once (done), then
+Project 2 fully (spec→build→3 test tiers), then Project 3. Not built in parallel.
+
+---
