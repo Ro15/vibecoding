@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watchdog — Observability</title>
+<link rel="stylesheet" href="/static/theme.css">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="bg-blobs" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<header class="topbar glass">
+  <div class="brand">
+    <span class="logo">📡</span>
+    <div>
+      <h1>Watchdog</h1>
+      <p class="sub">Intelligent Observability &amp; Event Watchdog</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <form id="upload-form" class="upload">
+      <select id="format-select" aria-label="Format">
+        <option value="json">JSON logs</option>
+        <option value="syslog">Syslog</option>
+        <option value="text">Text logs</option>
+      </select>
+      <label class="file-label glass-btn">
+        <input type="file" id="file-input" accept=".log,.json,.txt" hidden>
+        <span id="file-name">Choose log file…</span>
+      </label>
+      <button type="submit" class="glass-btn accent">Analyze</button>
+    </form>
+    <button id="btn-replay" class="glass-btn" title="Replay as a live feed">▶ Replay</button>
+    <button id="btn-theme" class="glass-btn" title="Toggle theme">◐</button>
+  </div>
+</header>
+
+<main>
+  <section class="tiles">
+    <div class="tile glass"><p class="tile-label">Events analyzed</p><p class="tile-value" id="tile-events">—</p></div>
+    <div class="tile glass"><p class="tile-label">Error rate</p><p class="tile-value" id="tile-errrate">—</p></div>
+    <div class="tile glass"><p class="tile-label">Anomalies</p><p class="tile-value" id="tile-anoms">—</p></div>
+    <div class="tile glass"><p class="tile-label">Alerts fired</p><p class="tile-value" id="tile-alerts">—</p></div>
+    <div class="tile glass"><p class="tile-label">Worst service</p><p class="tile-value small" id="tile-worst">—</p></div>
+  </section>
+
+  <section class="main-grid">
+    <div class="card glass health-card">
+      <div class="card-head">
+        <h2>Error-rate health trend <span id="replay-badge" class="badge-live" hidden>● LIVE</span></h2>
+        <div class="svc-legend" id="svc-legend"></div>
+      </div>
+      <div class="chart-box tall"><canvas id="chart-health"></canvas></div>
+    </div>
+    <div class="card glass">
+      <h2>Anomalies by detector</h2>
+      <div class="chart-box"><canvas id="chart-methods"></canvas></div>
+    </div>
+  </section>
+
+  <section class="main-grid">
+    <div class="card glass">
+      <h2>Service health</h2>
+      <div id="service-tiles" class="svc-tiles"><p class="empty">No data yet.</p></div>
+    </div>
+    <div class="card glass alerts-card">
+      <h2>Alert feed <span class="sub-note">(simulated webhook)</span></h2>
+      <div id="alert-feed" class="alert-feed"><p class="empty">No alerts — upload a log and analyze.</p></div>
+    </div>
+  </section>
+</main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<script src="/static/chart.umd.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
