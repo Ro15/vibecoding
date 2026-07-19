@@ -36,4 +36,14 @@ Decisions made this turn (via Q&A): FastAPI + SQLite + HTML dashboard; generated
 
 Decisions: v2 hexagonal architecture approved. Added requirements: per-endpoint E2E testing, automated Playwright tests on Chrome, glassmorphism dashboard.
 
+Clarifications (via Q&A): theme = dark + light glass with toggle; no auth in MVP; Playwright = full user journey; remediation script export = yes, per provider.
+
+---
+
+## Turn 5 — 22:35
+
+> approved
+
+Spec approved. Proceeding to implementation plan and build.
+
 ---
