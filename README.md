@@ -1,3 +1,21 @@
+# Cloud Platform Suite — monorepo
+
+Three API-first apps on a shared hexagonal core (`common/`): a plugin registry,
+SQLite adapter, FastAPI app-factory, and glassmorphism dashboard chassis. Adding a
+parser, rule, detector, or alert channel is one new file — the engine never changes.
+
+```
+common/           shared core (registry · db · api-factory · web tokens)
+apps/costopt/     Project 1 — Cloud Cost Optimizer & Remediation Engine (FinOps)
+apps/guardrail/   Project 2 — Enterprise Security Guardrail Auditor (Compliance)
+apps/watchdog/    Project 3 — Intelligent Observability & Event Watchdog (SRE)
+```
+
+Run any app: `python -m uvicorn apps.<name>.api.main:app --port 8000` from the repo root.
+Run all tests: `python -m pytest -q` · Playwright: `python -m pytest apps/*/tests/e2e -q`.
+
+---
+
 # CostOpt — Cloud Cost Optimizer & Remediation Engine
 
 API-first FinOps tool: ingest AWS / Azure / GCP / FOCUS billing exports (CSV/JSON),
@@ -22,11 +40,11 @@ settings UI, tag-based ownership, scheduled scans with webhook digests, guarded
 ```bash
 python -m venv .venv
 .venv/Scripts/pip install -r requirements.txt      # Windows
-.venv/Scripts/python -m uvicorn app.api.main:app --port 8000
+.venv/Scripts/python -m uvicorn apps.costopt.api.main:app --port 8000
 ```
 
-Open http://127.0.0.1:8000 — upload `sample_data/aws_cur.csv` (provider AWS) and
-`sample_data/azure_costs.json` (provider Azure), press **Run Analysis**.
+Open http://127.0.0.1:8000 — upload `apps/costopt/sample_data/aws_cur.csv` (provider AWS)
+and `apps/costopt/sample_data/azure_costs.json` (provider Azure), press **Run Analysis**.
 Interactive API docs: http://127.0.0.1:8000/docs
 
 ## API

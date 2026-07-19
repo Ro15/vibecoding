@@ -1,0 +1,52 @@
+/* Shared glassmorphism design tokens — dark + light.
+   Each app links this first, then adds its own accent overrides + layout. */
+* { box-sizing: border-box; margin: 0; }
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-a: #0f1226; --bg-b: #1c1440; --bg-c: #241a55;
+  --blob-1: rgba(87, 68, 214, .45); --blob-2: rgba(20, 130, 190, .35); --blob-3: rgba(160, 60, 160, .28);
+  --glass: rgba(255, 255, 255, .07);
+  --glass-strong: rgba(255, 255, 255, .12);
+  --glass-border: rgba(255, 255, 255, .16);
+  --ink: #ffffff; --ink-2: #c3c2b7; --ink-muted: #898781;
+  --grid: rgba(255, 255, 255, .09);
+  --series-1: #3987e5; --series-2: #008300; --series-3: #d55181; --series-4: #c98500;
+  --good: #0ca30c;
+  --sev-high: #e66767; --sev-med: #c98500; --sev-low: #3987e5;
+  --code-bg: rgba(0, 0, 0, .35);
+  --shadow: 0 8px 32px rgba(0, 0, 0, .35);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg-a: #e8ecf6; --bg-b: #f2e9f4; --bg-c: #e6f0ea;
+  --blob-1: rgba(120, 140, 235, .40); --blob-2: rgba(120, 200, 235, .35); --blob-3: rgba(235, 160, 210, .30);
+  --glass: rgba(255, 255, 255, .55);
+  --glass-strong: rgba(255, 255, 255, .75);
+  --glass-border: rgba(255, 255, 255, .65);
+  --ink: #0b0b0b; --ink-2: #52514e; --ink-muted: #898781;
+  --grid: rgba(11, 11, 11, .08);
+  --series-1: #2a78d6; --series-2: #008300; --series-3: #e87ba4; --series-4: #eda100;
+  --good: #006300;
+  --sev-high: #e34948; --sev-med: #eda100; --sev-low: #2a78d6;
+  --code-bg: rgba(11, 11, 11, .06);
+  --shadow: 0 8px 32px rgba(31, 38, 96, .12);
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--ink); min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-a), var(--bg-b) 55%, var(--bg-c));
+  background-attachment: fixed; padding: 18px;
+}
+
+.bg-blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+.bg-blobs span { position: absolute; border-radius: 50%; filter: blur(90px); }
+.bg-blobs span:nth-child(1) { width: 45vw; height: 45vw; top: -12vw; left: -8vw; background: var(--blob-1); }
+.bg-blobs span:nth-child(2) { width: 38vw; height: 38vw; bottom: -10vw; right: -6vw; background: var(--blob-2); }
+.bg-blobs span:nth-child(3) { width: 26vw; height: 26vw; top: 40%; left: 55%; background: var(--blob-3); }
+
+.glass {
+  background: var(--glass); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border); border-radius: 16px; box-shadow: var(--shadow);
+}
