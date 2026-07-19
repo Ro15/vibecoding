@@ -46,4 +46,9 @@ Clarifications (via Q&A): theme = dark + light glass with toggle; no auth in MVP
 
 Spec approved. Proceeding to implementation plan and build.
 
+Build completed this turn (22:35–22:52): implementation plan committed; Tasks 1–11
+executed with TDD; final state 82 automated tests green (72 pytest unit/API +
+10 Playwright Chromium journey tests); dashboard verified in both themes via
+screenshots; MVP running at http://127.0.0.1:8001.
+
 ---
