@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
@@ -176,4 +177,4 @@ def create_app(db_path: str = "costopt.db") -> FastAPI:
     return app
 
 
-app = create_app()
+app = create_app(os.environ.get("COSTOPT_DB", "costopt.db"))
