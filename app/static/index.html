@@ -1,1 +1,95 @@
-<!doctype html><title>CostOpt</title>
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CostOpt — Cloud Cost Optimizer</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="bg-blobs" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<header class="topbar glass">
+  <div class="brand">
+    <span class="logo">◍</span>
+    <div>
+      <h1>CostOpt</h1>
+      <p class="sub">Cloud Cost Optimizer &amp; Remediation Engine</p>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <form id="upload-form" class="upload">
+      <select id="provider-select" aria-label="Provider">
+        <option value="aws">AWS</option>
+        <option value="azure">Azure</option>
+      </select>
+      <label class="file-label glass-btn">
+        <input type="file" id="file-input" accept=".csv,.json" hidden>
+        <span id="file-name">Choose export…</span>
+      </label>
+      <button type="submit" class="glass-btn primary">Ingest</button>
+    </form>
+    <button id="btn-analyze" class="glass-btn accent">Run Analysis</button>
+    <button id="btn-theme" class="glass-btn" title="Toggle theme" aria-label="Toggle theme">◐</button>
+  </div>
+</header>
+
+<main>
+  <section class="tiles">
+    <div class="tile glass"><p class="tile-label">Monthly waste</p><p class="tile-value" id="tile-waste">—</p></div>
+    <div class="tile glass"><p class="tile-label">Open findings</p><p class="tile-value" id="tile-open">—</p></div>
+    <div class="tile glass"><p class="tile-label">Resources analyzed</p><p class="tile-value" id="tile-resources">—</p></div>
+    <div class="tile glass"><p class="tile-label">Potential annual savings</p><p class="tile-value good" id="tile-annual">—</p></div>
+  </section>
+
+  <section class="charts">
+    <div class="card glass">
+      <h2>Waste by category</h2>
+      <div class="chart-box"><canvas id="chart-category"></canvas></div>
+    </div>
+    <div class="card glass">
+      <h2>Waste by provider</h2>
+      <div class="chart-box"><canvas id="chart-provider"></canvas></div>
+    </div>
+    <div class="card glass">
+      <h2>Savings trend per scan</h2>
+      <div class="chart-box"><canvas id="chart-trend"></canvas></div>
+    </div>
+    <div class="card glass">
+      <h2>Top offenders</h2>
+      <ol id="top-offenders" class="offenders"><li class="empty">No data yet — ingest an export and run analysis.</li></ol>
+    </div>
+  </section>
+
+  <section class="card glass findings-card">
+    <div class="findings-head">
+      <h2>Findings</h2>
+      <div class="filters">
+        <select id="filter-provider"><option value="">All providers</option><option value="aws">AWS</option><option value="azure">Azure</option></select>
+        <select id="filter-rule">
+          <option value="">All rules</option>
+          <option value="unattached_disk">Unattached disks</option>
+          <option value="idle_vm">Idle VMs</option>
+          <option value="orphaned_ip">Orphaned IPs</option>
+          <option value="old_snapshot">Old snapshots</option>
+        </select>
+        <select id="filter-status"><option value="">All statuses</option><option value="open">Open</option><option value="dismissed">Dismissed</option><option value="remediated">Remediated</option><option value="stale">Stale</option></select>
+        <a id="btn-script-aws" class="glass-btn small" href="/api/remediation/script?provider=aws" download>⬇ AWS script</a>
+        <a id="btn-script-azure" class="glass-btn small" href="/api/remediation/script?provider=azure" download>⬇ Azure script</a>
+      </div>
+    </div>
+    <div class="table-wrap">
+      <table id="findings-table">
+        <thead><tr><th></th><th>Severity</th><th>Rule</th><th>Resource</th><th>Provider</th><th>Region</th><th class="num">Est. savings/mo</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody><tr class="empty-row"><td colspan="9">No findings yet — ingest a billing export, then run analysis.</td></tr></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script src="/static/chart.umd.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
