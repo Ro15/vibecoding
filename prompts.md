@@ -179,3 +179,13 @@ Final state: 3 apps on shared common core. 196 unit/API + 25 Playwright (12+7+6)
 green. All pushed to github.com/Ro15/vibecoding branch projects-2-3-monorepo.
 
 ---
+
+## Turn 15 — 00:23
+
+> give me some smaple data for all 3 projects
+
+Response: pointed to existing generated sample files per app + provided ready-to-paste
+sample snippets for CostOpt (AWS/Azure/GCP/FOCUS), Guardrail (tf/cfn/plan), Watchdog
+(json/syslog logs). No code changes.
+
+---
