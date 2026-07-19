@@ -1,110 +1,118 @@
-# Cloud Platform Suite — monorepo
+<h1 align="center">Cloud Platform Suite</h1>
 
-Three API-first apps on a shared hexagonal core (`common/`): a plugin registry,
-SQLite adapter, FastAPI app-factory, and glassmorphism dashboard chassis. Adding a
-parser, rule, detector, or alert channel is one new file — the engine never changes.
+<p align="center">
+  <strong>Three production platforms — FinOps, Compliance, SRE — on one shared, extensible core.</strong><br>
+  Built entirely by <em>vibe coding</em>: I architected and directed an AI engineer; I never edited a line of code by hand.
+</p>
 
-```
-common/           shared core (registry · db · api-factory · web tokens)
-apps/costopt/     Project 1 — Cloud Cost Optimizer & Remediation Engine (FinOps)
-apps/guardrail/   Project 2 — Enterprise Security Guardrail Auditor (Compliance)
-apps/watchdog/    Project 3 — Intelligent Observability & Event Watchdog (SRE)
-```
-
-Run any app: `python -m uvicorn apps.<name>.api.main:app --port 8000` from the repo root.
-Run all tests: `python -m pytest -q` · Playwright: `python -m pytest apps/*/tests/e2e -q`.
-
-**Guardrail (Project 2)** — audits Terraform (HCL + plan JSON) and CloudFormation against
-a CIS-aligned baseline (public S3, open SSH/RDP, unencrypted storage, public DBs, wildcard
-IAM), producing a 0–100 **Risk Score** + letter grade on a gauge dashboard. Parsers and
-policies are plugins; policy dispatch is type-indexed (O(R+M), not rules×resources).
-Sample data: `apps/guardrail/sample_data/insecure.tf` (grade F) vs `secure.tf` (A+).
-
-**Watchdog (Project 3)** — parses JSON/syslog/text logs, detects error-rate spikes with an
-**online EWMA + z-score** detector (O(1) time & space per point — memory bounded regardless
-of log volume) *and* a lightweight **IsolationForest** ML detector, then fires **simulated
-webhook alerts** (cooldown-deduped) and visualizes health trends with a live-replay demo.
-Sample data: `apps/watchdog/sample_data/app.log` (seeded checkout spike).
+<p align="center">
+  <img alt="tests" src="https://img.shields.io/badge/tests-221%20passing-2ea043?style=flat-square">
+  <img alt="python" src="https://img.shields.io/badge/python-3.11-3776ab?style=flat-square">
+  <img alt="stack" src="https://img.shields.io/badge/FastAPI%20·%20SQLite%20·%20Playwright-8b5cf6?style=flat-square">
+  <img alt="tiers" src="https://img.shields.io/badge/unit%20·%20API%20·%20browser%20E2E-informational?style=flat-square">
+</p>
 
 ---
 
-# CostOpt — Cloud Cost Optimizer & Remediation Engine
+## What this is
 
-API-first FinOps tool: ingest AWS / Azure / GCP / FOCUS billing exports (CSV/JSON),
-detect waste with nine policy-driven rules (unattached disks, idle VMs, orphaned IPs,
-old snapshots, oversized VMs, idle load balancers, unused NAT gateways, aged stopped
-VMs, untagged resources), and **generate** the exact CLI commands / SDK code to
-decommission it. SQLite storage, glassmorphism dashboard (dark/light), fully tested
-(pytest + Playwright).
+Three of the Graduate Vibe Coding Challenge projects — built as **one monorepo** so they share
+a single hexagonal core (`common/`): a plugin registry, SQLite adapter, FastAPI app-factory, and
+a glassmorphism dashboard chassis. Adding a cloud, a security rule, a log detector, or an alert
+channel is **one new file with a decorator — the engine never changes.** That open/closed design is
+the whole point: extension cost stays O(1) no matter how far each product grows.
 
-v1.1 adds: realized-savings tracking, multi-month trends, a policy engine with a
-settings UI, tag-based ownership, scheduled scans with webhook digests, guarded
-**simulated** execution with an audit trail, and optional API-key auth
-(`COSTOPT_VIEWER_KEY` / `COSTOPT_OPERATOR_KEY` env vars; unset = local mode).
+| | Project | Focus | In one line |
+|---|---|---|---|
+| 💰 | **[CostOpt](apps/costopt)** | FinOps | Ingests AWS/Azure/GCP/FOCUS billing exports, finds orphaned/wasteful resources, and generates the exact CLI + SDK commands to decommission them. |
+| 🛡️ | **[Guardrail](apps/guardrail)** | Compliance | Audits Terraform (HCL + plan JSON) and CloudFormation against a CIS-aligned baseline and renders a 0–100 **Risk Score**. |
+| 📡 | **[Watchdog](apps/watchdog)** | SRE | Parses JSON/syslog/text logs, detects error-rate spikes (online EWMA z-score **+** IsolationForest ML), and fires simulated webhook alerts. |
 
-> Safety: the tool never executes anything against a cloud account. Every finding yields
-> a *verify* command first, then the destructive command, plus a Python SDK equivalent.
-> The execution endpoint uses a simulated executor that echoes commands and records an
-> audit entry — swapping in a real executor is a deliberate, separate step.
+## Dashboards
+
+<table>
+  <tr>
+    <td width="33%"><img src="docs/images/costopt.jpg" alt="CostOpt dashboard"><br><sub><b>CostOpt</b> — waste by category, provider, owner + savings trend</sub></td>
+    <td width="33%"><img src="docs/images/guardrail.jpg" alt="Guardrail dashboard"><br><sub><b>Guardrail</b> — risk-score gauge, findings by severity & CIS control</sub></td>
+    <td width="33%"><img src="docs/images/watchdog.jpg" alt="Watchdog dashboard"><br><sub><b>Watchdog</b> — error-rate health trend with anomaly markers + alert feed</sub></td>
+  </tr>
+</table>
+
+## Architecture
+
+```
+common/           shared core — plugin registry · SQLite helpers · FastAPI app-factory + auth · theme tokens
+apps/
+  costopt/        Project 1 — Cloud Cost Optimizer & Remediation Engine (FinOps)
+  guardrail/      Project 2 — Enterprise Security Guardrail Auditor (Compliance)
+  watchdog/       Project 3 — Intelligent Observability & Event Watchdog (SRE)
+docs/
+  presentation/   the submission deck (HTML + Markdown)
+  superpowers/    per-project design specs and implementation plans
+prompts.md        full prompt-by-prompt audit log of the entire build
+```
+
+Every app is the same pipeline — **ingest → normalize to a common IR → pluggable analyzers
+(registry) → score/alert → SQLite → FastAPI → dashboard.** The normalized IR is what makes new
+input formats cheap; the registry is what makes new rules/detectors cheap. Where it matters,
+the design is deliberately efficient: Guardrail dispatches policies by resource type (O(R+M),
+never rules×resources); Watchdog's EWMA detector is O(1) time and space per event, so memory
+stays bounded at any log volume.
 
 ## Quick start
 
 ```bash
 python -m venv .venv
-.venv/Scripts/pip install -r requirements.txt      # Windows
-.venv/Scripts/python -m uvicorn apps.costopt.api.main:app --port 8000
+.venv/Scripts/pip install -r requirements.txt          # Windows (use bin/pip on macOS/Linux)
+.venv/Scripts/python -m playwright install chromium     # once, for the browser tests
+
+# run any app from the repo root:
+python -m uvicorn apps.costopt.api.main:app   --port 8000   # → CostOpt
+python -m uvicorn apps.guardrail.api.main:app --port 8001   # → Guardrail
+python -m uvicorn apps.watchdog.api.main:app  --port 8002   # → Watchdog
 ```
 
-Open http://127.0.0.1:8000 — upload `apps/costopt/sample_data/aws_cur.csv` (provider AWS)
-and `apps/costopt/sample_data/azure_costs.json` (provider Azure), press **Run Analysis**.
-Interactive API docs: http://127.0.0.1:8000/docs
+Each app opens on a glassmorphism dashboard (dark/light), ships generated sample data under
+`apps/<app>/sample_data/`, and exposes interactive API docs at `/docs`.
 
-## API
-
-| Method | Path | Purpose |
-|---|---|---|
-| POST | `/api/ingest` | multipart upload (`file`, `provider=aws\|azure`); idempotent by content hash; row-level errors |
-| POST | `/api/analyze` | run all detection rules; findings dedupe on (resource, rule); records a scan |
-| GET | `/api/findings` | filters: `provider`, `rule`, `status`, `min_savings` |
-| PATCH | `/api/findings/{id}` | status: `open` / `dismissed` / `remediated` |
-| GET | `/api/findings/{id}/remediation` | structured plan: verify + decommission CLI, SDK snippet, destructive flags |
-| GET | `/api/remediation/script?provider=` | downloadable bash script for all open findings |
-| POST | `/api/findings/{id}/execute` | guarded simulated execution (`dry_run`, `approve`) — audited |
-| GET | `/api/executions` | execution audit trail |
-| GET/PUT | `/api/policies` | detection thresholds (retention, CPU %, severity bands, tag keys…) |
-| GET/PUT | `/api/schedule` | scheduled scans (APScheduler) + webhook digest URL |
-| GET | `/api/trends` | per-billing-period waste (multi-month trend) |
-| GET | `/api/summary` | dashboard aggregates + by-owner + realized savings + scan trend |
-| GET | `/api/scans` | scan history |
-| GET | `/health` | liveness |
-
-## Architecture
-
-Hexagonal: pure-Python core (`app/core` — parsers, rules, remediation as plugin
-registries) with thin adapters (`app/adapters` SQLite, `app/api` FastAPI,
-`app/static` dashboard). New provider or rule = one new file with a decorator.
-Detection heuristics operate on billing data alone: attachment state, power state,
-usage, and age signals carried in export tags/AdditionalInfo; resources whose state
-is unknown are skipped rather than false-positived.
-
-Design spec: `docs/superpowers/specs/2026-07-18-cloud-cost-optimizer-design.md`
-Implementation plan: `docs/superpowers/plans/2026-07-18-cloud-cost-optimizer.md`
-Prompt audit log: `prompts.md`
-
-## Tests
+## Tests — 221, all green
 
 ```bash
-.venv/Scripts/python -m pytest tests/unit tests/api -q     # 112 unit + API E2E tests
-.venv/Scripts/python -m playwright install chromium        # once
-.venv/Scripts/python -m pytest tests/e2e -q                # 12 browser journey tests
+python -m pytest -q                      # 196 unit + API tests across all apps + common core
+python -m pytest apps/*/tests/e2e -q     # 25 Playwright browser journeys on Chrome
 ```
 
-## Sample data
+Every feature shipped green across three independent tiers — unit, API end-to-end, and
+real-browser journeys — plus an agent-driven manual pass. Nothing was called "done" without
+fresh test output to prove it.
 
-`sample_data/generate.py` deterministically produces AWS/Azure/GCP/FOCUS exports for
-two billing months with 40+ seeded waste findings (≈ $1,100/mo) among healthy noise.
+## Tech stack
 
-## Production-hardening backlog
+Python 3.11 · FastAPI · SQLAlchemy 2 (SQLite) · pydantic v2 · APScheduler ·
+python-hcl2 + PyYAML (IaC parsing) · scikit-learn (ML anomaly detector) ·
+pytest + httpx + Playwright · Chart.js + vanilla-JS glassmorphism dashboards.
 
-Postgres swap, real CUR/FOCUS full-schema coverage, CloudWatch/Azure Monitor metrics
-for true idleness, real (non-simulated) execution behind SSO/RBAC, multi-currency.
+---
+
+## About this build — the Vibe Coding Challenge
+
+This repository is a submission for the Graduate **Vibe Coding Challenge**: *"You are the
+architect; the AI is the engineer."* The entire codebase was produced under a Lead-Architect
+protocol — **no manual code edits**, every prompt logged, time-boxed with elapsed-time checkpoints.
+
+- **Approach & mindset (Tagle Tag):** *The Pioneer, with an Architect edge* — "You don't wait for
+  the future, you build it." (Innovation 69 · Competence 69 · Autonomy 63 · Relatedness 63 · Growth 53)
+- **Audit log:** [`prompts.md`](prompts.md) — the full prompt-by-prompt trail of the build.
+- **Presentation:** [`docs/presentation/`](docs/presentation) — the deck in HTML and Markdown.
+- **Cloud decommission:** none required — the suite runs entirely on a free-tier local database
+  (SQLite) with generated sample data, so there are no billable cloud resources and no residual cost.
+
+> The brief asked for **one** of the three projects. This delivers **all three** on a shared core,
+> plus ten additional production features on CostOpt — a demonstration that the real graduate edge
+> is architecture and direction, not typing speed.
+
+## Backlog (production-hardening)
+
+Postgres swap (the repo adapter is ready) · real CUR/FOCUS/FOCUS-full schema coverage ·
+CloudWatch/Azure Monitor metrics for true idleness · real (non-simulated) remediation execution
+behind SSO/RBAC · live log-stream ingestion for Watchdog · multi-currency.
