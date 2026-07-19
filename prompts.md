@@ -136,6 +136,16 @@ GitHub credential (username Ro15); repo pre-existed and was empty.
 > build and what you want to use."
 
 Response: architecture proposal for both (shared hexagonal + plugin-registry core reused
-from CostOpt; streaming online detection for P3) + clarifying questions. No code yet.
+from CostOpt; streaming online detection for P3) + clarifying questions.
+
+Decisions (via Q&A): monorepo w/ shared core; P2 = HCL2 + CloudFormation + terraform
+plan JSON; P3 = statistical (EWMA+z-score) + lightweight ML detector; P3 input = batch
+upload + simulated live replay feed.
+
+Phase 0 executed on branch projects-2-3-monorepo: monorepo restructure (app/ ->
+apps/costopt/), created shared common/ core (registry, db, api-factory+auth, theme
+tokens), CostOpt registry now built on common.registry. Verified: 112 unit/API + 12
+Playwright + 7 new common tests green; CostOpt boots from apps.costopt.api.main. Committed.
+Next: Phase 1 = Project 2 (guardrail), Phase 2 = Project 3 (watchdog).
 
 ---
