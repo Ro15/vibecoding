@@ -29,8 +29,20 @@
     toastTimer = setTimeout(() => (el.className = ""), 4000);
   }
 
+  // ---------- API with optional key auth ----------
   async function api(path, opts = {}) {
+    const key = localStorage.getItem("costopt-api-key");
+    if (key) {
+      opts.headers = { ...(opts.headers || {}), "X-API-Key": key };
+    }
     const res = await fetch(path, opts);
+    if (res.status === 401) {
+      const entered = prompt("This CostOpt instance requires an API key (viewer or operator):");
+      if (entered) {
+        localStorage.setItem("costopt-api-key", entered);
+        return api(path, opts);
+      }
+    }
     if (!res.ok) {
       let detail = res.statusText;
       try {
@@ -47,22 +59,18 @@
     "$" + Number(v).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
   // ---------- charts ----------
-  function baseOptions() {
+  function renderCharts(summary, trends) {
     const ink2 = cssVar("--ink-2");
     const grid = cssVar("--grid");
-    return { ink2, grid };
-  }
-
-  function renderCharts(summary) {
-    const { ink2, grid } = baseOptions();
-    const s1 = cssVar("--series-1"), s2 = cssVar("--series-2"), s3 = cssVar("--series-3");
+    const s1 = cssVar("--series-1"), s2 = cssVar("--series-2"),
+          s3 = cssVar("--series-3"), s4 = cssVar("--sev-med");
     Object.values(charts).forEach((c) => c.destroy());
     charts = {};
     Chart.defaults.color = ink2;
     Chart.defaults.font.family = 'system-ui, -apple-system, "Segoe UI", sans-serif';
 
-    const catOrder = ["storage", "compute", "network"];
-    const catColors = { storage: s1, compute: s2, network: s3 };
+    const catOrder = ["storage", "compute", "network", "governance"];
+    const catColors = { storage: s1, compute: s2, network: s3, governance: s4 };
     const catLabels = catOrder.filter((c) => c in summary.by_category);
     charts.category = new Chart($("#chart-category"), {
       type: "doughnut",
@@ -84,14 +92,14 @@
       },
     });
 
-    const provOrder = ["aws", "azure"].filter((p) => p in summary.by_provider);
+    const provOrder = ["aws", "azure", "gcp"].filter((p) => p in summary.by_provider);
     charts.provider = new Chart($("#chart-provider"), {
       type: "bar",
       data: {
         labels: provOrder.map((p) => p.toUpperCase()),
         datasets: [{
           data: provOrder.map((p) => summary.by_provider[p]),
-          backgroundColor: [s1, s2],
+          backgroundColor: [s1, s2, s3].slice(0, provOrder.length),
           borderRadius: 4, maxBarThickness: 72,
         }],
       },
@@ -100,6 +108,32 @@
         plugins: {
           legend: { display: false },
           tooltip: { callbacks: { label: (c) => ` ${fmtUSD(c.parsed.y)}/mo` } },
+        },
+        scales: {
+          x: { grid: { display: false }, border: { color: grid } },
+          y: { grid: { color: grid }, border: { display: false },
+               ticks: { callback: (v) => "$" + v } },
+        },
+      },
+    });
+
+    const periods = trends.periods || [];
+    charts.months = new Chart($("#chart-months"), {
+      type: "bar",
+      data: {
+        labels: periods.map((p) => p.period),
+        datasets: [{
+          data: periods.map((p) => p.waste),
+          backgroundColor: s1, borderRadius: 4, maxBarThickness: 72,
+        }],
+      },
+      options: {
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: {
+            label: (c) => ` ${fmtUSD(c.parsed.y)}/mo waste, ` +
+                          `${periods[c.dataIndex].findings} findings` } },
         },
         scales: {
           x: { grid: { display: false }, border: { color: grid } },
@@ -138,32 +172,46 @@
     });
   }
 
-  // ---------- summary + offenders ----------
+  function fillList(sel, entries, emptyMsg) {
+    const ol = $(sel);
+    ol.innerHTML = "";
+    if (!entries.length) {
+      ol.innerHTML = `<li class="empty">${emptyMsg}</li>`;
+      return;
+    }
+    for (const [label, amount] of entries) {
+      const li = document.createElement("li");
+      li.innerHTML = `<span class="rid mono" title="${label}">${label}</span>
+                      <span class="amt">${fmtUSD(amount)}/mo</span>`;
+      ol.appendChild(li);
+    }
+  }
+
+  // ---------- summary ----------
   async function loadSummary() {
-    const summary = await (await api("/api/summary")).json();
+    const [summary, trends] = await Promise.all([
+      (await api("/api/summary")).json(),
+      (await api("/api/trends")).json(),
+    ]);
     $("#tile-waste").textContent = fmtUSD(summary.total_monthly_waste) + "/mo";
     $("#tile-open").textContent = summary.open_findings;
     $("#tile-resources").textContent = summary.resources_analyzed;
     $("#tile-annual").textContent = fmtUSD(summary.potential_annual_savings);
-    const ol = $("#top-offenders");
-    ol.innerHTML = "";
-    if (!summary.top_offenders.length) {
-      ol.innerHTML = '<li class="empty">No data yet — ingest an export and run analysis.</li>';
-    } else {
-      for (const o of summary.top_offenders) {
-        const li = document.createElement("li");
-        li.innerHTML = `<span class="rid mono" title="${o.resource_id}">${o.resource_id}</span>
-                        <span class="amt">${fmtUSD(o.est_monthly_savings)}/mo</span>`;
-        ol.appendChild(li);
-      }
-    }
-    renderCharts(summary);
+    $("#tile-realized").textContent = fmtUSD(summary.realized_monthly_savings) + "/mo";
+    fillList("#top-offenders",
+             summary.top_offenders.map((o) => [o.resource_id, o.est_monthly_savings]),
+             "No data yet — ingest an export and run analysis.");
+    fillList("#by-owner", Object.entries(summary.by_owner), "No data yet.");
+    renderCharts(summary, trends);
   }
 
   // ---------- findings table ----------
   const RULE_LABELS = {
     unattached_disk: "Unattached disk", idle_vm: "Idle VM",
     orphaned_ip: "Orphaned IP", old_snapshot: "Old snapshot",
+    oversized_vm: "Oversized VM", idle_load_balancer: "Idle LB",
+    unused_nat_gateway: "Unused NAT gw", aged_stopped_vm: "Aged stopped VM",
+    untagged_resource: "Untagged",
   };
 
   async function loadFindings() {
@@ -175,7 +223,7 @@
     const tbody = $("#findings-table tbody");
     tbody.innerHTML = "";
     if (!rows.length) {
-      tbody.innerHTML = '<tr class="empty-row"><td colspan="9">No findings match — ingest a billing export, then run analysis.</td></tr>';
+      tbody.innerHTML = '<tr class="empty-row"><td colspan="10">No findings match — ingest a billing export, then run analysis.</td></tr>';
       return;
     }
     for (const f of rows) {
@@ -188,6 +236,7 @@
         <td>${RULE_LABELS[f.rule] || f.rule}</td>
         <td class="mono" title="${f.resource_id}">${shorten(f.resource_id)}</td>
         <td>${f.provider.toUpperCase()}</td>
+        <td>${f.owner || "—"}</td>
         <td>${f.region}</td>
         <td class="num">${fmtUSD(f.est_monthly_savings)}</td>
         <td><span class="badge st-${f.status}">${f.status}</span></td>
@@ -199,7 +248,7 @@
     }
   }
 
-  const shorten = (s) => (s.length > 42 ? "…" + s.slice(-40) : s);
+  const shorten = (s) => (s.length > 38 ? "…" + s.slice(-36) : s);
 
   async function toggleDetail(row) {
     const next = row.nextElementSibling;
@@ -221,13 +270,83 @@
           <button class="glass-btn small btn-copy" data-cmd="${encodeURIComponent(s.cli)}">Copy</button></div>
         <details class="sdk"><summary>SDK equivalent (Python)</summary><pre>${escapeHtml(s.sdk_code)}</pre></details>
       </div>`).join("");
-    tr.innerHTML = `<td colspan="9"><div class="rem-steps">${steps}</div></td>`;
+    tr.innerHTML = `<td colspan="10"><div class="rem-steps">${steps}
+      <div class="exec-actions">
+        <button class="glass-btn small act-dryrun" data-id="${id}">▶ Dry-run (simulated)</button>
+        <button class="glass-btn small act-execute" data-id="${id}">⚡ Approve &amp; execute (simulated)</button>
+      </div>
+      <div class="exec-output" id="exec-output-${id}" hidden></div>
+    </div></td>`;
     row.after(tr);
     row.querySelector(".expander").textContent = "▾";
   }
 
   const escapeHtml = (s) =>
     s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  async function runExecution(id, dryRun) {
+    if (!dryRun && !confirm("Approve simulated execution? The destructive commands "
+                            + "will be echoed by the simulated executor and the "
+                            + "finding will be marked remediated.")) return;
+    const body = { dry_run: dryRun, approve: !dryRun };
+    const result = await (await api(`/api/findings/${id}/execute`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })).json();
+    const out = $(`#exec-output-${id}`);
+    if (out) {
+      out.hidden = false;
+      out.textContent = result.output;
+    }
+    toast(dryRun ? "Dry-run complete — no changes made."
+                 : `Executed (simulated) — finding #${id} marked remediated.`);
+    if (!dryRun) await refresh();
+  }
+
+  // ---------- settings modal ----------
+  async function openSettings() {
+    const [p, sch] = await Promise.all([
+      (await api("/api/policies")).json(),
+      (await api("/api/schedule")).json(),
+    ]);
+    $("#pol-retention").value = p.snapshot_retention_days;
+    $("#pol-idlecpu").value = p.cpu_idle_threshold_pct;
+    $("#pol-rightsize").value = p.vm_rightsize_cpu_pct;
+    $("#pol-stoppedage").value = p.stopped_vm_age_days;
+    $("#pol-untagged").value = p.untagged_min_cost_usd;
+    $("#sch-enabled").checked = sch.enabled;
+    $("#sch-interval").value = sch.interval_minutes;
+    $("#sch-webhook").value = sch.webhook_url;
+    $("#settings-modal").hidden = false;
+  }
+
+  async function saveSettings() {
+    try {
+      await api("/api/policies", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          snapshot_retention_days: Number($("#pol-retention").value),
+          cpu_idle_threshold_pct: Number($("#pol-idlecpu").value),
+          vm_rightsize_cpu_pct: Number($("#pol-rightsize").value),
+          stopped_vm_age_days: Number($("#pol-stoppedage").value),
+          untagged_min_cost_usd: Number($("#pol-untagged").value),
+        }),
+      });
+      await api("/api/schedule", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          enabled: $("#sch-enabled").checked,
+          interval_minutes: Number($("#sch-interval").value) || 60,
+          webhook_url: $("#sch-webhook").value,
+        }),
+      });
+      $("#settings-modal").hidden = true;
+      toast("Policies & schedule saved. Re-run analysis to apply new thresholds.");
+    } catch (err) { toast("Save failed: " + err.message, true); }
+  }
 
   // ---------- events ----------
   $("#file-input").addEventListener("change", (e) => {
@@ -258,6 +377,12 @@
     } catch (err) { toast("Analysis failed: " + err.message, true); }
   });
 
+  $("#btn-settings").addEventListener("click", () =>
+    openSettings().catch((e) => toast(e.message, true)));
+  $("#btn-settings-close").addEventListener("click", () =>
+    ($("#settings-modal").hidden = true));
+  $("#btn-settings-save").addEventListener("click", saveSettings);
+
   ["filter-provider", "filter-rule", "filter-status"].forEach((id) =>
     $("#" + id).addEventListener("change", () => loadFindings().catch((e) => toast(e.message, true))));
 
@@ -268,6 +393,14 @@
       await navigator.clipboard.writeText(decodeURIComponent(copyBtn.dataset.cmd));
       copyBtn.textContent = "Copied!";
       setTimeout(() => (copyBtn.textContent = "Copy"), 1500);
+      return;
+    }
+    const dryBtn = e.target.closest(".act-dryrun");
+    const execBtn = e.target.closest(".act-execute");
+    if (dryBtn || execBtn) {
+      e.stopPropagation();
+      runExecution((dryBtn || execBtn).dataset.id, Boolean(dryBtn))
+        .catch((err) => toast(err.message, true));
       return;
     }
     const dismiss = e.target.closest(".act-dismiss");
