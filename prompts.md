@@ -210,7 +210,11 @@ green on main, pushed to origin/main. main now contains all 3 projects on shared
 > I'll make the presentation and email format.
 
 Read both files. Tag = "The Pioneer with an Architect edge" (Developing tier; dims
-G53/A63/C69/R63/I69). Delivered: Tag summary, submission email, and a slide-by-slide
-presentation plan + format options. No code changes.
+G53/A63/C69/R63/I69). Delivered: Tag summary + submission email. Then (both formats
+chosen) built a 14-slide presentation in docs/presentation/: deck.html (self-contained
+glassmorphism deck, embedded live-dashboard screenshots, keyboard nav, published as an
+artifact) + deck.md (Marp Markdown → PPTX/PDF). Covers the 3 projects, shared-core
+architecture, 221 tests, Vega staging product (dev→hosting→compliance), and the
+vibe-coding 15X thesis. Committed + pushed to main.
 
 ---
